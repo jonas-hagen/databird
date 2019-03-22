@@ -19,5 +19,5 @@ setup(
     packages=["databird"],
     python_requires=">=3.5.*, <4",
     version=VERSION,
-    install_requires=["pymlconf"],
+    install_requires=["ruamel.yaml", "dict-recursive-update", "frozendict"],
 )
