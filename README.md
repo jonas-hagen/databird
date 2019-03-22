@@ -2,8 +2,6 @@
 
 Periodically retrieve data from different sources.
 
-[![Build Status](https://travis-ci.org/jonas-hagen/databird.svg?branch=master)](https://travis-ci.org/jonas-hagen/databird)
-
 ## Setup
 
 ### Setting up the development environment
