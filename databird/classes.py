@@ -2,6 +2,7 @@ from importlib import import_module
 from databird import dtutil
 from databird import BaseDriver
 from typing import List, Set, Dict, Tuple, Optional
+import datetime as dt
 
 
 class Profile:
@@ -22,7 +23,7 @@ class Repository:
         self,
         name: str,
         period: str = None,
-        start: str = None,
+        start: dt.datetime = None,
         profile: Profile = None,
         targets: List[str] = None,
         description: str = "",
@@ -50,7 +51,7 @@ class Repository:
 
         # Parse values
         self.delay = dtutil.parse_timedelta(delay)
-        self.start = dtutil.parse_datetime(start)
+        self.start = start
         self.period = dtutil.parse_timedelta(period)
 
         self.name = name
