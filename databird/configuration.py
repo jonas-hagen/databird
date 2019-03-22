@@ -82,6 +82,10 @@ class Settings(collections.UserDict):
         # Repositories
         if "repositories" in config:
             for name, repo_config in config["repositories"].items():
+                if not "profile" in repo_config:
+                    raise ConfigurationError(
+                        "Repository `{}` is missing driver field.".format(name)
+                    )
                 repo_config["profile"] = config["profiles"][repo_config["profile"]]
                 repo = Repository(name, **repo_config)
 
