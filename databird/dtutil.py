@@ -43,3 +43,11 @@ def parse_datetime(s):
                 )
             )
     return date
+
+
+def iter_dates(start, end, period):
+    """Yield dates from `start` to `end` with step equalt to `period`."""
+    current = start
+    while current <= end:
+        yield current
+        current += period

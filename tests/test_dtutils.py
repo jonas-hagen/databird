@@ -28,3 +28,12 @@ def test_parse_timedelta(text, expected):
 def test_parse_datetime(text, expected):
     value = dtutil.parse_datetime(text)
     assert value == expected
+
+
+def test_iter_dates():
+    start = dt.datetime(2019, 1, 1)
+    end = dt.datetime(2019, 1, 10)
+    period = dt.timedelta(days=1)
+    dates = list(dtutil.iter_dates(start, end, period))
+
+    assert len(dates) == 10

@@ -43,7 +43,7 @@ class Repository:
 
         # Set default values
         if delay is None:
-            delay = "0 days"
+            delay = period
         if hooks is None:
             hooks = []
         if configuration is None:
@@ -60,3 +60,7 @@ class Repository:
         # Instantiate the driver
         profile.driver.check_repo_config(configuration)
         self.driver = profile.driver(profile.configuration, configuration)
+
+    def list_missing():
+        """List missing targets."""
+        pass
