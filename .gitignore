@@ -1,0 +1,9 @@
+bin
+*.egg-info
+include
+lib
+lib64
+share
+.dir-locals.el
+pyvenv.cfg
+**/*.pyc
