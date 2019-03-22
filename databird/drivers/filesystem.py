@@ -3,28 +3,22 @@ Simple databird driver that uses a file system. Mainly used for testing.
 """
 import os
 import shutil
+from databird import BaseDriver
 
 
-class FilesystemDriver:
-    def __init__(self, profile_config, repo_config):
-        self.check_repo_config(repo_config)
-        self.check_profile_config(profile_config)
-
-        # The _*_config variables will never be changed
-        self._profile_config = profile_config
-        self._repo_config = repo_config
-
-    @staticmethod
-    def check_repo_config(config):
+class FilesystemDriver(BaseDriver):
+    @classmethod
+    def check_repo_config(cls, config):
+        super().check_repo_config(config)
         assert "pattern" in config
 
-    @staticmethod
-    def check_profile_config(config):
+    @classmethod
+    def check_profile_config(cls, config):
+        super().check_profile_config(config)
         assert "root" in config
 
-    def check(self):
-        """Check connection."""
-        return True
+    def check_connection(self):
+        return os.isdir(self._profile_config["root"])
 
     def render_filename(self, context):
         return self._repo_config["pattern"].format(**context)
