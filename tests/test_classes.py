@@ -1,5 +1,6 @@
 from databird import Profile, Repository
 from databird.drivers import FilesystemDriver
+import datetime as dt
 
 
 def test_profile():
@@ -11,8 +12,12 @@ def test_repository():
     r = Repository(
         "foo",
         period="1 days",
-        start="2019-01-01",
+        start=dt.datetime.now() - dt.timedelta(days=10),
         profile=p,
-        targets=[],
+        targets=["blubber_{time:%Y-%d-%m}.dat"],
         configuration=dict(pattern="simple_{date}.txt"),
     )
+
+    missing = list(r.iter_missing("/something"))
+
+    assert len(missing) == 10
