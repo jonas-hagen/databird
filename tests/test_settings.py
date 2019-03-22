@@ -17,6 +17,7 @@ def test_settings():
     assert "general" in settings
     assert "root" in settings["general"]
     assert "profiles" in settings
+    assert "repositories" in settings
 
 
 def test_recursive_update():
@@ -24,8 +25,8 @@ def test_recursive_update():
     configuration.initialize(base_config)
     settings = configuration.get_settings()
 
-    assert "test" in settings["profiles"]
-    assert "test2" in settings["profiles"]
+    assert "filesystem1" in settings["profiles"]
+    assert "other" in settings["profiles"]
 
 
 def test_immutability():
