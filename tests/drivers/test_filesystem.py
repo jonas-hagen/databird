@@ -1,5 +1,6 @@
 from databird.drivers import filesystem
 import datetime as dt
+import glob
 
 
 def test_filesystem_render():
@@ -11,14 +12,12 @@ def test_filesystem_render():
     assert fsd.render_filename(context) == "simple_2019-03-01.txt"
 
 
-def test_filesystem(tmp_path):
-    source_root = tmp_path / "source"
-    source_root.mkdir()
-    repo_root = tmp_path / "repo"
-    repo_root.mkdir()
+def test_filesystem(tmpdir):
+    source_root = tmpdir.mkdir("source")
+    repo_root = tmpdir.mkdir("repo")
 
     # Create new source file
-    (source_root / "simple_2019-03-01.txt").open("w").close()
+    (source_root.join("simple_2019-03-01.txt")).open("w").close()
 
     profile_config = dict(root=source_root)
     repo_config = dict(pattern="simple_{date:%Y-%m-%d}.txt")
@@ -27,6 +26,6 @@ def test_filesystem(tmp_path):
     context = dict(date=dt.date(2019, 3, 1))
     assert fsd.is_available(context)
 
-    assert len(list(repo_root.glob("*.txt"))) == 0
-    fsd.retrieve(context, repo_root / "new_file.txt")
-    assert len(list(repo_root.glob("*.txt"))) == 1
+    assert len(list(glob.glob(str(repo_root.join("*.txt"))))) == 0
+    fsd.retrieve(context, repo_root.join("new_file.txt"))
+    assert len(list(glob.glob(str(repo_root.join("*.txt"))))) == 1
