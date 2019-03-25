@@ -20,13 +20,13 @@ class BaseDriver(ABC):
         assert isinstance(config, dict)
 
     def check_connection(self):
-        """Check if connection can be established."""
+        """Check if connection can be established. Must not mutate self!"""
         return True
 
     def is_available(self, context):
-        """Check if data is available for certain context."""
+        """Check if data is available for certain context. Must not mutate self!"""
         pass
 
     def retrieve(self, context, target):
-        """Retrieve data for certain context and save as `target` file."""
+        """Retrieve data for certain context and save as `target` file. Must not mutate self!"""
         pass
