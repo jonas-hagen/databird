@@ -4,9 +4,8 @@ import glob
 
 
 def test_filesystem_render():
-    profile_config = dict(root="/data")
-    repo_config = dict(patterns=dict(default="simple_{date:%Y-%m-%d}.txt"))
-    fsd = filesystem.FilesystemDriver(profile_config, repo_config)
+    config = dict(root="/data", patterns=dict(default="simple_{date:%Y-%m-%d}.txt"))
+    fsd = filesystem.FilesystemDriver(config)
 
     context = dict(date=dt.date(2019, 3, 1))
     assert fsd.render_filename(context, "default") == "simple_2019-03-01.txt"
@@ -19,9 +18,8 @@ def test_filesystem(tmpdir):
     # Create new source file
     (source_root.join("simple_2019-03-01.txt")).open("w").close()
 
-    profile_config = dict(root=source_root)
-    repo_config = dict(patterns=dict(default="simple_{date:%Y-%m-%d}.txt"))
-    fsd = filesystem.FilesystemDriver(profile_config, repo_config)
+    config = dict(root=source_root, patterns=dict(default="simple_{date:%Y-%m-%d}.txt"))
+    fsd = filesystem.FilesystemDriver(config)
 
     context = dict(date=dt.date(2019, 3, 1))
     assert fsd.is_available(context)

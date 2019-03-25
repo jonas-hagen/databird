@@ -1,24 +1,24 @@
 from abc import ABC
 import os
+from dict_recursive_update import recursive_update
 
 
 class BaseDriver(ABC):
-    def __init__(self, profile_config, repo_config):
+    def __init__(self, config):
         """Create a driver with profile and repository configuration."""
-        self.check_repo_config(repo_config)
-        self.check_profile_config(profile_config)
+        config = recursive_update(self.default_config(), config)
+        self.check_config(config)
 
-        # The _*_config variables will never be changed
-        self._profile_config = profile_config
-        self._repo_config = repo_config
+        # The _config variables will never be changed
+        self._config = config
 
     @classmethod
-    def check_repo_config(cls, config):
+    def check_config(cls, config):
         assert isinstance(config, dict)
 
     @classmethod
-    def check_profile_config(cls, config):
-        assert isinstance(config, dict)
+    def default_config(cls):
+        return {}
 
     @staticmethod
     def create_dir(target):

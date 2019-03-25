@@ -1,5 +1,6 @@
 from databird import BaseDriver
 from databird import dtutil
+from dict_recursive_update import recursive_update
 from importlib import import_module
 from typing import List, Set, Dict, Tuple, Optional
 import datetime as dt
@@ -19,8 +20,6 @@ class Profile:
         self.name = name
         self.driver = driver
         self.configuration = configuration
-
-        driver.check_profile_config(configuration)
 
 
 class Repository:
@@ -64,8 +63,8 @@ class Repository:
         self.targets = targets
 
         # Instantiate the driver
-        profile.driver.check_repo_config(configuration)
-        self.driver = profile.driver(profile.configuration, configuration)
+        driver_config = recursive_update(profile.configuration, configuration)
+        self.driver = profile.driver(driver_config)
 
     def _render_targets(self, root_dir, context):
         base_path = os.path.join(root_dir, self.name)
