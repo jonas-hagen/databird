@@ -14,8 +14,8 @@ def test_repository():
         period="1 days",
         start=dt.datetime.now() - dt.timedelta(days=10),
         profile=p,
-        targets=["blubber_{time:%Y-%d-%m}.dat"],
-        configuration=dict(pattern="simple_{date}.txt"),
+        targets=dict(default="blubber_{time:%Y-%d-%m}.dat"),
+        configuration=dict(patterns=dict(default="simple_{date}.txt")),
     )
 
     missing = list(r.iter_missing("/something"))

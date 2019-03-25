@@ -22,8 +22,8 @@ def test_retrieve_missing(tmpdir):
         period="1 days",
         start=dt.datetime(2019, 2, 1),
         profile=p,
-        targets=["empty_{time:%Y-%m-%d}.dat"],
-        configuration=dict(pattern="simple_{time:%Y-%m-%d}.txt"),
+        targets=dict(default="empty_{time:%Y-%m-%d}.dat"),
+        configuration=dict(patterns=dict(default="simple_{time:%Y-%m-%d}.txt")),
     )
 
     unreached = runner.retrieve_missing(repo_root, [r], num_workers=0)

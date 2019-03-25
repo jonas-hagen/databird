@@ -32,6 +32,6 @@ class BaseDriver(ABC):
         """Check if data is available for certain context. Must not mutate self!"""
         pass
 
-    def retrieve(self, context, target):
-        """Retrieve data for certain context and save as `target` file. Must not mutate self!"""
+    def retrieve(self, context, targets):
+        """Retrieve data for certain context and save as `targets` file. Must not mutate self!"""
         pass

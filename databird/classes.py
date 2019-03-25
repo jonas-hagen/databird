@@ -30,7 +30,7 @@ class Repository:
         period: str = None,
         start: dt.datetime = None,
         profile: Profile = None,
-        targets: List[str] = None,
+        targets: Dict[str, str] = None,
         description: str = "",
         delay: str = None,
         hooks: List[str] = None,
@@ -45,9 +45,6 @@ class Repository:
             raise ValueError("`profile` is required.")
         if not targets:
             raise ValueError("`targets` is required.")
-
-        if len(targets) > 1:
-            raise NotImplementedError("more than one target.")
 
         # Set default values
         if delay is None:
@@ -70,22 +67,41 @@ class Repository:
         profile.driver.check_repo_config(configuration)
         self.driver = profile.driver(profile.configuration, configuration)
 
+    def _render_targets(self, root_dir, context):
+        base_path = os.path.join(root_dir, self.name)
+        targets = dict()
+        for name, target in self.targets.items():
+            filename = target.format(**context)
+            targets[name] = os.path.join(base_path, filename)
+        return targets
+
+    @staticmethod
+    def _targets_reached(targets):
+        """
+        Check if a set of (rendered) targets is reached.
+
+        Currently a 'set of targets' is reached if one file of the set exists.
+        This is the most simple and robust way for now, but might change in future.
+        """
+        for target in targets.values():
+            if os.path.exists(target):
+                return True
+        return False
+
     def iter_missing(self, root_dir, ref_time=None):
         """
         List missing targets.
 
         Specifying `ref_time` (default: now) makes this function only depend on
-        the file system contents (under `root_dir`).
+        the file system contents under `root_dir/repo_name`.
         """
         ref_time = ref_time or dt.datetime.now()
-        base_path = os.path.join(root_dir, self.name)
         end_date = ref_time - self.delay
         for time in dtutil.iter_dates(self.start, end_date, self.period):
             context = get_context(time=time)
-            filename = self.targets[0].format(**context)
-            target = os.path.join(base_path, filename)
-            if not os.path.exists(target):
-                yield context, target
+            targets = self._render_targets(root_dir, context)
+            if not self._targets_reached(targets):
+                yield context, targets
 
     def iter_available(self, root_dir):
         for context, target in self.iter_missing(root_dir):
