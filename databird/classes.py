@@ -70,11 +70,16 @@ class Repository:
         profile.driver.check_repo_config(configuration)
         self.driver = profile.driver(profile.configuration, configuration)
 
-    def iter_missing(self, root_dir):
-        """List missing targets."""
+    def iter_missing(self, root_dir, ref_time=None):
+        """
+        List missing targets.
+
+        Specifying `ref_time` (default: now) makes this function only depend on
+        the file system contents (under `root_dir`).
+        """
+        ref_time = ref_time or dt.datetime.now()
         base_path = os.path.join(root_dir, self.name)
-        end_date = dt.datetime.now() - self.delay
-        print("----->", self.start, end_date, self.period)
+        end_date = ref_time - self.delay
         for time in dtutil.iter_dates(self.start, end_date, self.period):
             context = get_context(time=time)
             filename = self.targets[0].format(**context)
