@@ -7,6 +7,25 @@ from databird import BaseDriver
 
 
 class FilesystemDriver(BaseDriver):
+    """
+    Simple driver to retrieve data files from a local file system by copying.
+
+    Configuration options:
+      - root: The root directory where the data resides.
+      - patterns: A target_name->pattern map.
+          This map specifies a pattern (that is rendered in context) for every
+          target name in the repository.
+
+    Example configuration:
+    ```
+    root: /data/something/
+    patterns:
+      header: headertext_{time:%Y-%m-%d}.txt
+      data: binarylog_{time:%Y-%m-%d}.bin
+      code: taball_{time:%Y-%m-%d}.tar
+    ```
+    """
+
     @classmethod
     def check_config(cls, config):
         super().check_config(config)
