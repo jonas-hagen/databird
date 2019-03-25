@@ -34,5 +34,6 @@ class FilesystemDriver(BaseDriver):
 
     def retrieve(self, context, target):
         source = self.render_abs_filename(context)
+        self.create_dir(target)
         shutil.copyfile(source, target)
         return True

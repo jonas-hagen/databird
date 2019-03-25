@@ -1,4 +1,5 @@
 from abc import ABC
+import os
 
 
 class BaseDriver(ABC):
@@ -18,6 +19,10 @@ class BaseDriver(ABC):
     @classmethod
     def check_profile_config(cls, config):
         assert isinstance(config, dict)
+
+    @staticmethod
+    def create_dir(target):
+        os.makedirs(os.path.dirname(target), exist_ok=True)
 
     def check_connection(self):
         """Check if connection can be established. Must not mutate self!"""
