@@ -1,0 +1,19 @@
+# databird-driver-{{{package.driver_name}}}
+
+This package provides a {{{package.driver_name}}} driver for databird.
+
+{{{package.description}}}
+
+
+## Setup
+
+### Setting up the development environment
+
+1. Create a Python environment and activate it
+   ``` shell
+   $ python3 -m venv . && source bin/activate
+   ```
+2. Install the development environment:
+   ``` shell
+   $ ({{{package.driver_name}}}) pip install -r requirements.txt -c constraints.txt
+   ```

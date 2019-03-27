@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+from setuptools import setup
+
+VERSION = "1.0.0"
+
+setup(
+    author="{{{author.name}}}",
+    author_email="{{{author.email}}}",
+    classifiers=[
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python 3.6",
+    ],
+    description="{{{package.description}}}",
+    license="{{{package.license}}}",
+    maintainer="{{{author.name}}}",
+    maintainer_email="{{{author.email}}}",
+    name="databird-driver-{{{package.driver_name}}}",
+    packages=["databird.drivers.{{{package.driver_name}}}"],
+    python_requires=">=3.5.*, <4",
+    install_requires=["databird"],
+    version=VERSION,
+)

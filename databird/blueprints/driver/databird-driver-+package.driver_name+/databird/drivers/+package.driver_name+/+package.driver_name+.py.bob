@@ -1,0 +1,35 @@
+from databird import BaseDriver
+from databird import ConfigurationError
+
+
+class {{{package.driver_name.capitalize()}}}Driver(BaseDriver):
+    """
+    {{{package.description}}}
+
+    Configuration options:
+      - ...
+      - ...
+
+    Example configuration:
+    ```
+    ...
+    ```
+    """
+
+    @classmethod
+    def check_config(cls, config):
+        super().check_config(config)
+        # Check if the config seems valid here
+        if not config:
+            raise ConfigurationError("no configuration provided.")
+
+    def is_available(self, context):
+        return True
+
+    def retrieve_single(self, context, target, name):
+        pass
+
+    def retrieve(self, context, targets):
+        # If you want, you can call
+        # super().retrieve(context, targets)
+        pass
