@@ -1,11 +1,11 @@
-from databird.drivers import filesystem
+from databird.drivers.standard import FilesystemDriver
 import datetime as dt
 import glob
 
 
 def test_filesystem_render():
     config = dict(root="/data", patterns=dict(default="simple_{date:%Y-%m-%d}.txt"))
-    fsd = filesystem.FilesystemDriver(config)
+    fsd = FilesystemDriver(config)
 
     context = dict(date=dt.date(2019, 3, 1))
     assert fsd.render_filename(context, "default") == "simple_2019-03-01.txt"
@@ -19,7 +19,7 @@ def test_filesystem(tmpdir):
     (source_root.join("simple_2019-03-01.txt")).open("w").close()
 
     config = dict(root=source_root, patterns=dict(default="simple_{date:%Y-%m-%d}.txt"))
-    fsd = filesystem.FilesystemDriver(config)
+    fsd = FilesystemDriver(config)
 
     context = dict(date=dt.date(2019, 3, 1))
     assert fsd.is_available(context)

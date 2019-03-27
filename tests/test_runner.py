@@ -1,6 +1,6 @@
 from databird import Profile, Repository
 from databird import runner
-from databird.drivers import FilesystemDriver
+from databird.drivers.standard import FilesystemDriver
 import datetime as dt
 import glob
 import pytest

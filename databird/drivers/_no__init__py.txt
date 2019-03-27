@@ -1,0 +1,2 @@
+This is a native namespace package and must not have a __init__.py
+See: https://packaging.python.org/guides/packaging-namespace-packages/#native-namespace-packages

@@ -64,14 +64,26 @@ class Settings(collections.UserDict):
 
         drivers = {}
         for name in driver_names:
+            parts = name.split(".")
+            package_name = ".".join(parts[:-1])
+            class_name = parts[-1]
+            module_name = "databird.drivers." + package_name
             try:
-                parts = name.split(".")
-                module_name = ".".join(parts[:-1])
-                class_name = parts[-1]
                 module = importlib.import_module(module_name)
             except ModuleNotFoundError:
-                raise ConfigurationError("Driver module not found: '{}'".format(name))
-            drivers[name] = getattr(module, class_name)
+                raise ConfigurationError(
+                    "Driver module not found: '{}' for driver '{}'".format(
+                        module_name, name
+                    )
+                )
+            try:
+                drivers[name] = getattr(module, class_name)
+            except AttributeError:
+                raise ConfigurationError(
+                    "Driver module '{}' has no class '{}'.".format(
+                        module_name, class_name
+                    )
+                )
 
         # Profiles
         if "profiles" in config:

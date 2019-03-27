@@ -1,4 +1,4 @@
-from databird.drivers import FilesystemDriver
+from .filesystem import FilesystemDriver
 from ftplib import FTP, FTP_TLS
 import logging
 import os
