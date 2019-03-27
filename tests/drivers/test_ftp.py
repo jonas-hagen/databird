@@ -1,8 +1,10 @@
-from databird.drivers import FtpDriver
 from databird.classes import get_context
+from databird.drivers import FtpDriver
 import datetime as dt
+import pytest
 
 
+@pytest.mark.external_service
 def test_ftp(tmpdir):
     fd = FtpDriver(
         dict(
