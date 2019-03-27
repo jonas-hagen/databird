@@ -33,5 +33,10 @@ class BaseDriver(ABC):
         pass
 
     def retrieve(self, context, targets):
-        """Retrieve data for certain context and save as `targets` file. Must not mutate self!"""
+        """Retrieve data for certain context and different `targets`. Must not mutate self!"""
+        for name, target in targets.items():
+            self.retrieve_single(context, target, name)
+
+    def retrieve_single(self, context, target, name=""):
+        """Retrieve data for certain context and save as `target`. Must not mutate self!"""
         pass

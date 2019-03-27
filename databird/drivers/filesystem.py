@@ -53,9 +53,7 @@ class FilesystemDriver(BaseDriver):
                 return True
         return False
 
-    def retrieve(self, context, targets):
-        for name, target in targets.items():
-            source = self.render_abs_filename(context, name)
-            self.create_dir(target)
-            shutil.copyfile(source, target)
-        return True
+    def retrieve_single(self, context, target, name):
+        source = self.render_abs_filename(context, name)
+        self.create_dir(target)
+        return shutil.copyfile(source, target)

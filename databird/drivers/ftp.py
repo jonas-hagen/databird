@@ -70,15 +70,20 @@ class FtpDriver(FilesystemDriver):
                 return True
         return False
 
+    def retrieve_single(self, context, target, name, c=None):
+        if c is None:
+            c = self._connect()
+        # source is an absolute path on the FTP server
+        source = self.render_abs_filename(context, name)
+        source_dir = os.path.dirname(source)
+        source_file = os.path.basename(source)
+        # target is an absolute local path to a file
+        self.create_dir(target)
+        with open(target, "wb") as f:
+            c.cwd(source_dir)
+            c.retrbinary("RETR " + source_file, f.write)
+
     def retrieve(self, context, targets):
         c = self._connect()
         for name, target in targets.items():
-            source = self.render_abs_filename(context, name)
-            source_dir = os.path.dirname(source)
-            source_file = os.path.basename(source)
-            self.create_dir(target)
-            with open(target, "wb") as f:
-                c.cwd(source_dir)
-                c.retrbinary("RETR " + source_file, f.write)
-
-        return True
+            self.retrieve_single(context, target, name, c)
