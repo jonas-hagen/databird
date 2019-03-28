@@ -3,7 +3,7 @@ from ftplib import FTP, FTP_TLS
 import logging
 import os
 
-logger = logging.getLogger("databird.drivers.ftp")
+logger = logging.getLogger("databird_drivers.ftp")
 
 
 class FtpDriver(FilesystemDriver):

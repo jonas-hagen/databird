@@ -16,7 +16,7 @@ setup(
     maintainer="{{{author.name}}}",
     maintainer_email="{{{author.email}}}",
     name="databird-driver-{{{package.driver_name}}}",
-    packages=["databird.drivers.{{{package.driver_name}}}"],
+    packages=["databird_drivers.{{{package.driver_name}}}"],
     python_requires=">=3.5.*, <4",
     install_requires=["databird"],
     version=VERSION,

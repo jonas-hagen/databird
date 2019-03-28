@@ -1,5 +1,5 @@
 from databird import Profile, Repository
-from databird.drivers.standard import FilesystemDriver
+from databird_drivers.standard import FilesystemDriver
 import datetime as dt
 
 

@@ -67,7 +67,7 @@ class Settings(collections.UserDict):
             parts = name.split(".")
             package_name = ".".join(parts[:-1])
             class_name = parts[-1]
-            module_name = "databird.drivers." + package_name
+            module_name = "databird_drivers." + package_name
             try:
                 module = importlib.import_module(module_name)
             except ModuleNotFoundError:

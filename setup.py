@@ -16,7 +16,7 @@ setup(
     maintainer="Jonas Hagen",
     maintainer_email="jonas.hagen@iap.unibe.ch",
     name="databird",
-    packages=["databird", "databird.drivers.standard"],
+    packages=["databird", "databird_drivers.standard"],
     python_requires=">=3.5.*, <4",
     version=VERSION,
     install_requires=["ruamel.yaml", "dict-recursive-update", "frozendict", "mr.bob"],

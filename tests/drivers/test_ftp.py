@@ -1,5 +1,5 @@
 from databird.classes import get_context
-from databird.drivers.standard import FtpDriver
+from databird_drivers.standard import FtpDriver
 import datetime as dt
 import pytest
 
