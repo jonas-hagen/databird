@@ -1,9 +1,12 @@
 #!/usr/bin/env python
-from setuptools import setup
+import setuptools
 
 VERSION = "1.0.0"
 
-setup(
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
+setuptools.setup(
     author="Jonas Hagen",
     author_email="jonas.hagen@iap.unibe.ch",
     classifiers=[
@@ -11,7 +14,9 @@ setup(
         "Programming Language :: Python",
         "Programming Language :: Python 3.6",
     ],
-    description="Periodically retrieve data from different sources.",
+    description="Keeps a local data repository up to date with heterogeneous data sources.",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     license="MIT",
     maintainer="Jonas Hagen",
     maintainer_email="jonas.hagen@iap.unibe.ch",
