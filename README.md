@@ -90,7 +90,7 @@ Anyone can write drivers (see below). Currently, the following drivers are avail
    ```
 2. Install the development environment:
    ``` shell
-   (databird) $ pip install -r requirements/development.txt
+   (databird) $ pip install -r requirements-dev.txt
    ```
 
 ### Writing a new driver
