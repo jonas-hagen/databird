@@ -23,5 +23,15 @@ setup(
     download_url="https://github.com/jonas-hagen/databird/archive/databird-{v}.tar.gz".format(
         v=VERSION
     ),
-    install_requires=["ruamel.yaml", "dict-recursive-update", "frozendict", "mr.bob"],
+    install_requires=[
+        "ruamel.yaml",
+        "dict-recursive-update",
+        "frozendict",
+        "mr.bob",
+        "click",
+    ],
+    entry_points="""
+        [console_scripts]
+        databird=databird.cli:cli
+    """,
 )

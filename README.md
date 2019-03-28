@@ -24,7 +24,10 @@ $ pip3 install https://github.com/jonas-hagen/databird/archive/master.zip
 Databird is configured with configuration files and invoked by
 
 ```
-$ databird -c /etc/databird/databird.conf
+$ databird retrieve -c /etc/databird/databird.conf
+
+# or (as the above is the default)
+$ databird retrieve
 ```
 
 You can store the configuration files anywhere and for example run the above command periodically as cron job.
@@ -54,7 +57,7 @@ profiles:
        
 repositories:
   nasa_gnss:
-    description: Data from NASA's Archive of Space Geodesy Data
+    description: Data from NASAs Archive of Space Geodesy Data
     profile: nasa_cddis
     period: 1 day
     delay: 2 days
