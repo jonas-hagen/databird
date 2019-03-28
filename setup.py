@@ -4,6 +4,7 @@ import setuptools
 VERSION = "0.6.2"
 
 with open("README.md", "r") as fh:
+    fh.readline()  # do not include ribbons
     long_description = fh.read()
 
 setuptools.setup(
