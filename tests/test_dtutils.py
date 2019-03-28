@@ -37,3 +37,22 @@ def test_iter_dates():
     dates = list(dtutil.iter_dates(start, end, period))
 
     assert len(dates) == 10
+
+
+@pytest.mark.parametrize(
+    "date,last",
+    [
+        (dt.datetime(2019, 1, 20), dt.datetime(2019, 1, 31)),
+        (dt.datetime(2019, 2, 20, 6), dt.datetime(2019, 2, 28)),
+    ],
+)
+def test_last_day(date, last):
+    assert last == dtutil.month_last_day(date)
+
+
+def test_first_day():
+    assert dt.datetime(2019, 1, 1) == dtutil.month_first_day(dt.datetime(2019, 1, 20))
+
+
+def test_iso_date():
+    assert "2019-01-20" == dtutil.iso_date(dt.datetime(2019, 1, 20))

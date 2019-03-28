@@ -1,4 +1,5 @@
 import datetime as dt
+import calendar
 
 
 def parse_timedelta(s):
@@ -51,3 +52,18 @@ def iter_dates(start, end, period):
     while current <= end:
         yield current
         current += period
+
+
+def month_last_day(date):
+    """Return the last date of the month for the month containing date."""
+    _, last_day = calendar.monthrange(date.year, date.month)
+    return dt.datetime(date.year, date.month, last_day)
+
+
+def month_first_day(date):
+    """Return the first date of the month (always 01) for the month containing date."""
+    return dt.datetime(date.year, date.month, 1)
+
+
+def iso_date(date):
+    return date.strftime("%Y-%m-%d")
