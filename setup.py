@@ -10,7 +10,7 @@ setuptools.setup(
     author="Jonas Hagen",
     author_email="jonas.hagen@iap.unibe.ch",
     classifiers=["Operating System :: OS Independent"],
-    description="Keeps a local data repository up to date with heterogeneous data sources.",
+    description="Keeps a local data repository up to date with different remote data sources.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     license="MIT",

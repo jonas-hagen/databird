@@ -32,7 +32,7 @@ def with_settings():
 
 @click.group()
 def cli():
-    """Keeps a local data repository up to date with heterogeneous data sources."""
+    """Keeps a local data repository up to date with different data sources."""
     pass
 
 
