@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jonas-hagen/databird.svg?branch=master)](https://travis-ci.org/jonas-hagen/databird)
+
 # databird
 
 Periodically retrieve data from different sources.
