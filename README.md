@@ -5,20 +5,6 @@ Periodically retrieve data from different sources.
 The `databird` package only provides a framework to plan and run the tasks needed to keep a local data-file-store up do date with various remote sources.
 The remote sources can be anything (e.g. FTP Server, ECMWF, HTTP Api, SQL database, ...), as long as there is a *databird-driver* available for the specific source.
 
-## Install
-
-Installing the release:
-
-```
-$ pip3 install databird
-```
-
-Installing the development version:
-
-```
-$ pip3 install https://github.com/jonas-hagen/databird/archive/master.zip
-```
-
 ## Usage
 
 Databird is configured with configuration files and invoked by
@@ -34,6 +20,8 @@ You can store the configuration files anywhere and for example run the above com
 
 ## Configuration
 
+The following example configuration defines a repository, which is populated with daily GNSS data from [ftp://cddis.nasa.gov/gnss/data/daily/](ftp://cddis.nasa.gov/gnss/data/daily/).
+
 The main configuration file (usually `databird.conf`) could look like that:
 
 ```yml
@@ -42,6 +30,8 @@ general:
   num-workers: 16   # max number of async workers
   include: "databird.conf.d/*.conf"  # include config files
 ```
+
+Generally you can configure anything in any file, as all configuration files are merged to one configuration tree. The `include` option is an exception, as it can only be declared in the top config file.
 
 Then in `databird.conf.d/cddis.conf` you can configure a profile and a repository:
 
@@ -71,7 +61,7 @@ repositories:
         status: "{time:%Y}/{time:%j}/{time:%y%j}.status"
 ```
 
-When calling databird with this configuration the following achieved:
+When calling databird with this configuration the following is achieved:
 
 * A repository in the folder `/data/repos/nasa_gnss/` is created
 * For every day, a file like `2019/nasa_gnss_2019-01-20.status` is expected

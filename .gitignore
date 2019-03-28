@@ -6,4 +6,6 @@ lib64
 share
 .dir-locals.el
 pyvenv.cfg
-**/*.pyc
+**/*.pycdist
+dist
+**/__pycache__
