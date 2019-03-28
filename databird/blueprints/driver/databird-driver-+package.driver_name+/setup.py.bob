@@ -1,23 +1,35 @@
 #!/usr/bin/env python
-from setuptools import setup
+import setuptools
 
-VERSION = "1.0.0"
+VERSION = "0.6.2"
 
-setup(
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
+setuptools.setup(
     author="{{{author.name}}}",
     author_email="{{{author.email}}}",
-    classifiers=[
-        "Operating System :: OS Independent",
-        "Programming Language :: Python",
-        "Programming Language :: Python 3.6",
-    ],
+    classifiers=["Operating System :: OS Independent"],
     description="{{{package.description}}}",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     license="{{{package.license}}}",
     maintainer="{{{author.name}}}",
     maintainer_email="{{{author.email}}}",
     name="databird-driver-{{{package.driver_name}}}",
     packages=["databird_drivers.{{{package.driver_name}}}"],
     python_requires=">=3.5.*, <4",
-    install_requires=["databird"],
     version=VERSION,
+    url="https://github.com/jonas-hagen/databird",
+    install_requires=[
+        "ruamel.yaml",
+        "dict-recursive-update",
+        "frozendict",
+        "mr.bob",
+        "click",
+    ],
+    entry_points="""
+        [console_scripts]
+        databird=databird.cli:cli
+    """,
 )
