@@ -56,7 +56,7 @@ class Repository:
 
         self.name = name
         self.description = description
-        self.start = start
+        self.start = dtutil.normalize_datetime(start)
         self.targets = targets
 
         # Instantiate the driver

@@ -56,3 +56,14 @@ def test_first_day():
 
 def test_iso_date():
     assert "2019-01-20" == dtutil.iso_date(dt.datetime(2019, 1, 20))
+
+
+@pytest.mark.parametrize(
+    "value,expected",
+    [
+        (dt.datetime(2019, 1, 1, 12), dt.datetime(2019, 1, 1, 12)),
+        (dt.date(2019, 1, 1), dt.datetime(2019, 1, 1)),
+    ],
+)
+def test_normalize_datetime(value, expected):
+    assert dtutil.normalize_datetime(value) == expected

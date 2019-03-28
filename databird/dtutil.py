@@ -1,5 +1,6 @@
 import datetime as dt
 import calendar
+import time
 
 
 def parse_timedelta(s):
@@ -67,3 +68,7 @@ def month_first_day(date):
 
 def iso_date(date):
     return date.strftime("%Y-%m-%d")
+
+
+def normalize_datetime(date):
+    return dt.datetime.fromtimestamp(time.mktime(date.timetuple()))
