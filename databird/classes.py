@@ -1,14 +1,11 @@
 from databird import BaseDriver
 from databird import dtutil
+from databird import utils
 from dict_recursive_update import recursive_update
 from importlib import import_module
 from typing import List, Set, Dict, Tuple, Optional
 import datetime as dt
 import os
-
-
-def get_context(time):
-    return {"time": time}
 
 
 class Profile:
@@ -97,7 +94,7 @@ class Repository:
         ref_time = ref_time or dt.datetime.now()
         end_date = ref_time - self.delay
         for time in dtutil.iter_dates(self.start, end_date, self.period):
-            context = get_context(time=time)
+            context = utils.get_context(time=time)
             targets = self._render_targets(root_dir, context)
             if not self._targets_reached(targets):
                 yield context, targets
