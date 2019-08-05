@@ -1,3 +1,3 @@
 -e .
 pytest
-fakeredis
+git+https://github.com/jamesls/fakeredis
