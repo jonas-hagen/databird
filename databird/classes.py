@@ -71,6 +71,10 @@ class Repository:
             targets[name] = os.path.join(base_path, filename)
         return targets
 
+    def hash(self, context):
+        targets = self._render_targets("", context)
+        return utils.hash_dict(targets)
+
     @staticmethod
     def _targets_reached(targets):
         """

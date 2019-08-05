@@ -1,4 +1,15 @@
+import hashlib
 from databird import dtutil
+
+
+def hash_dict(d: dict):
+    m = hashlib.sha1()
+    for k in sorted(d):
+        v = d[k]
+        if not isinstance(k, str) or not isinstance(v, str):
+            raise NotImplementedError("hash for other than dict(str->str)")
+        m.update(v.encode())
+    return m.hexdigest()
 
 
 def get_context(time):
