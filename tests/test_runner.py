@@ -4,6 +4,8 @@ from databird_drivers.standard import FilesystemDriver
 import datetime as dt
 import glob
 import pytest
+from fakeredis import FakeStrictRedis
+from rq import Queue
 
 
 def test_retrieve_missing(tmpdir):
@@ -20,13 +22,16 @@ def test_retrieve_missing(tmpdir):
     r = Repository(
         "foo",
         period="1 days",
-        start=dt.datetime(2019, 2, 1),
+        start=dt.datetime(2019, 3, 1),
         profile=p,
         targets=dict(default="empty_{time:%Y-%m-%d}.dat"),
         configuration=dict(patterns=dict(default="simple_{time:%Y-%m-%d}.txt")),
     )
+    ref_time = dt.datetime(2019, 3, 5)
 
-    unreached = runner.retrieve_missing(repo_root, [r], num_workers=0)
+    redis_conn = FakeStrictRedis()
+    queue = Queue(is_async=False, connection=redis_conn)
+    runner.retrieve_missing(repo_root, [r], queue=queue, ref_time=ref_time)
     assert len(list(glob.glob(str(repo_root.join("foo/*.dat"))))) == 4
 
 

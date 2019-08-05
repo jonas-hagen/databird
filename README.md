@@ -20,6 +20,14 @@ $ databird retrieve
 
 You can store the configuration files anywhere and for example run the above command periodically as cron job.
 
+Also, some rq workers are required:
+
+```
+$ rq worker databird
+```
+
+This will start one worker. You should use a supervisor to start multiple workers.
+
 ## Configuration
 
 The following example configuration defines a repository, which is populated with daily GNSS data from [ftp://cddis.nasa.gov/gnss/data/daily/](ftp://cddis.nasa.gov/gnss/data/daily/).

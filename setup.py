@@ -31,6 +31,8 @@ setuptools.setup(
         "frozendict",
         "mr.bob",
         "click",
+        "rq",
+        "redis",
     ],
     entry_points="""
         [console_scripts]
