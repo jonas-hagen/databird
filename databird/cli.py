@@ -1,6 +1,7 @@
+from databird.configuration import Settings
 import click
 import functools
-from databird.configuration import Settings
+import logging
 
 
 def with_settings():
@@ -12,9 +13,17 @@ def with_settings():
             default="/etc/databird/databird.conf",
             help="The configuration file.",
         )
+        @click.option("-v", "--verbose", count=True)
         @functools.wraps(func)
-        def wrapper(config, *args, **kwargs):
+        def wrapper(config, verbose, *args, **kwargs):
             settings = Settings(config)
+            settings["general"]["verbosity"] = verbose
+            if verbose == 0:
+                logging.basicConfig(level=logging.WARNING)
+            elif verbose == 1:
+                logging.basicConfig(level=logging.INFO)
+            elif verbose >= 2:
+                logging.basicConfig(level=logging.DEBUG)
             return func(settings, *args, **kwargs)
 
         return wrapper

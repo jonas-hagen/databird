@@ -21,17 +21,25 @@ FAILURE_TTL = 360 * ONE_DAY
 def retrieve_missing(root_dir, repos: List[Repository], queue=None, ref_time=None):
     """Retrieve all targets that are missing from the repositories."""
     if queue is None:
-        queue = Queue(connection=Redis())
+        queue = Queue("databird", connection=Redis())
     redis_conn = queue.connection
+    logger.info("Using queue " + str(queue.name))
 
     if ref_time is None:
         ref_time = dt.datetime.now()
+    logger.debug("ref time is " + str(ref_time))
 
     submitted_jobs = []
     for repo in repos:
+        logger.debug("checking repo " + repo.name)
         for context, targets in repo.iter_missing(root_dir, ref_time):
+            logger.debug(
+                "missing {} targets for {}".format(len(targets), str(context["time"]))
+            )
             driver_name = str(type(repo.driver).__name__)
-            info = driver_name + " for targets " + str(targets)
+            info = "Repo {} with {} for targets {} at {}".format(
+                repo.name, driver_name, ", ".join(targets), str(context["time"])
+            )
 
             # To check if a job is already running, we pre-create the
             # redis hash entry that is created by rq by setting the
@@ -42,9 +50,10 @@ def retrieve_missing(root_dir, repos: List[Repository], queue=None, ref_time=Non
             if redis_conn.hsetnx(rq_job, "databird", 1):
                 # we are the first ones
                 job = queue.enqueue(
-                    repo.driver.retrieve,
+                    save_copy_wrapper(repo.driver.retrieve),
                     context,
                     targets,
+                    job_id=job_id,
                     description=info,
                     result_ttl=RESULT_TTL,
                     job_timeout=JOB_TIMEOUT,
@@ -54,10 +63,11 @@ def retrieve_missing(root_dir, repos: List[Repository], queue=None, ref_time=Non
                 logger.info("Sumitted job " + job_id)
                 submitted_jobs.append(job)
             else:
-                logger.debug(
-                    "Job {} already in queue for targets: {}".format(
-                        job_id, str(targets)
-                    )
-                )
+                try:
+                    job = queue.fetch_job(job_id)
+                    status = job.get_status()
+                except:
+                    status = "unknown"
+                logger.info("Job {} already in queue: {}".format(job_id, str(status)))
 
     return submitted_jobs
