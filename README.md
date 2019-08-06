@@ -80,6 +80,12 @@ When calling databird with this configuration the following is achieved:
 
 This example used the `standard.FTPDriver`.
 
+## Monitoring
+
+Use `databird webmonitor [PORT]` to start the web interface.
+
+Since databird uses RQ for managing jobs, you also check the options at [RQ/docs/monitoring](https://python-rq.org/docs/monitoring/).
+
 ## Drivers
 
 Anyone can write drivers (see below). Currently, the following drivers are available:
