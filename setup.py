@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import setuptools
 
-VERSION = "0.6.3"
+VERSION = "0.7.0"
 
 with open("README.md", "r") as fh:
     fh.readline()  # do not include ribbons
