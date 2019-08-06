@@ -50,7 +50,7 @@ def retrieve_missing(root_dir, repos: List[Repository], queue=None, ref_time=Non
             if redis_conn.hsetnx(rq_job, "databird", 1):
                 # we are the first ones
                 job = queue.enqueue(
-                    save_copy_wrapper(repo.driver.retrieve),
+                    repo.driver.retrieve_safe,
                     context,
                     targets,
                     job_id=job_id,
