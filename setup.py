@@ -33,6 +33,8 @@ setuptools.setup(
         "click",
         "rq",
         "redis",
+        "flask",
+        "rq-dashboard",
     ],
     entry_points="""
         [console_scripts]

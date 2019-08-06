@@ -46,3 +46,12 @@ def retrieve(settings):
     runner.retrieve_missing(
         settings["general"]["root"], settings["repositories"].values()
     )
+
+
+@cli.command()
+@click.argument("port", default=9180, required=False)
+@click.argument("host", default="localhost", required=False)
+def webmonitor(port, host):
+    from databird import webmonitor
+
+    webmonitor.run_server(host, port)
