@@ -12,17 +12,9 @@ def with_settings():
             default="/etc/databird/databird.conf",
             help="The configuration file.",
         )
-        @click.option(
-            "-n",
-            "--num-workers",
-            type=int,
-            help="Number of concurrent workers, set to 0 for debugging",
-        )
         @functools.wraps(func)
-        def wrapper(config, num_workers, *args, **kwargs):
+        def wrapper(config, *args, **kwargs):
             settings = Settings(config)
-            if num_workers is not None:
-                settings["general"]["num_workers"] = num_workers
             return func(settings, *args, **kwargs)
 
         return wrapper
@@ -43,7 +35,5 @@ def retrieve(settings):
     from databird import runner
 
     runner.retrieve_missing(
-        settings["general"]["root"],
-        settings["repositories"].values(),
-        settings["general"].get("num_workers", 4),
+        settings["general"]["root"], settings["repositories"].values()
     )
