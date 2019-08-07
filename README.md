@@ -90,11 +90,17 @@ Since databird uses RQ for managing jobs, you also check the options at [RQ/docs
 
 Anyone can write drivers (see below). Currently, the following drivers are available:
 
-* `standard.FilesystemDriver`: Retrieve data from the local filesystem (included)
-* `standard.CommandDriver`: Run an arbitrary shell command (included)
-* `standard.FtpDriver`: Retrieve data from an FTP server (included)
-* `ecmwf.EcmwfDriver`: Retrieve data from the European Centre for Medium-Range Weather Forecasts (ECMWF) via their API (to be anounced)
-* `c3s.C3SDriver`: Retrieve data from the Copernicus Climate Change Service (C3S) via their API (to be anounced)
+Included:
+
+* `standard.FilesystemDriver`: Retrieve data from the local filesystem
+* `standard.CommandDriver`: Run an arbitrary shell command
+* `standard.FtpDriver`: Retrieve data from an FTP server
+
+Climate:
+
+* `climate.EcmwfDriver`: Retrieve data from the European Centre for Medium-Range Weather Forecasts (ECMWF) via their API
+* `climate.C3SDriver`: Retrieve data from the Copernicus Climate Change Service (C3S) via their API
+* `climate.GesDiscDriver`: Retrieve data from the NASA EarthData GES DISC service.
 
 
 ## Development
