@@ -69,6 +69,11 @@ class Repository:
 
         # Instantiate the driver
         driver_config = recursive_update(profile.configuration, configuration)
+        for key, value in driver_config.items():
+            if isinstance(value, str):
+                if value.startswith("env:$"):
+                    driver_config[key] = os.environ[value[5:]]
+
         self.driver = profile.driver(driver_config)
 
     def _render_targets(self, root_dir, context):
