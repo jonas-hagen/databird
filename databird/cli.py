@@ -52,6 +52,32 @@ def retrieve(settings):
 @click.argument("port", default=9180, required=False)
 @click.argument("host", default="localhost", required=False)
 def webmonitor(port, host):
+    """Start the web monitor server."""
     from databird import webmonitor
 
     webmonitor.run_server(host, port)
+
+
+@cli.command()
+@click.option("--clean", is_flag=True, help="Remove failed jobs.")
+def jobs(clean):
+    """List all jobs in queues."""
+    from redis import Redis
+    from operator import itemgetter
+
+    redis_conn = Redis(decode_responses=True)
+    jobs = []
+    attrs = ["status", "origin", "enqueued_at", "description"]
+    for key in redis_conn.scan_iter("rq:job:db_*"):
+        values = redis_conn.hmget(key, attrs)
+        j = dict(zip(attrs, values))
+        j["id"] = key.split(":")[-1]
+        j["short_id"] = key.split(":")[-1][3:9]
+        if j["status"] == "failed" and clean:
+            redis_conn.delete(key)
+        else:
+            jobs.append(j)
+
+    jobs = sorted(jobs, key=itemgetter("enqueued_at"))
+    for j in jobs:
+        print("{short_id} {origin:<10s} {status:<10s} {description}".format(**j))
