@@ -5,7 +5,6 @@ import datetime as dt
 import glob
 import pytest
 from fakeredis import FakeStrictRedis
-from rq import Queue
 
 
 def test_retrieve_missing(tmpdir):
@@ -30,8 +29,9 @@ def test_retrieve_missing(tmpdir):
     ref_time = dt.datetime(2019, 3, 5)
 
     redis_conn = FakeStrictRedis()
-    queue = Queue(is_async=False, connection=redis_conn)
-    runner.retrieve_missing(repo_root, [r], queue=queue, ref_time=ref_time)
+    runner.retrieve_missing(
+        repo_root, [r], redis_conn=redis_conn, is_async=False, ref_time=ref_time
+    )
     assert len(list(glob.glob(str(repo_root.join("foo/*.dat"))))) == 4
 
 

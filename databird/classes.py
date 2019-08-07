@@ -30,6 +30,7 @@ class Repository:
         description: str = "",
         delay: str = None,
         hooks: List[str] = None,
+        queue: str = "default",
         configuration: Dict = None,
     ):
         # Check required arguments
@@ -41,6 +42,12 @@ class Repository:
             raise ValueError("`profile` is required.")
         if not targets:
             raise ValueError("`targets` is required.")
+        if queue not in ["default", "fast", "slow", "lethargic"]:
+            raise ValueError(
+                "Invalid queue: '{}'. Use one of 'default', 'fast', 'slow', 'lethargic'".format(
+                    queue
+                )
+            )
 
         # Set default values
         if delay is None:
@@ -58,6 +65,7 @@ class Repository:
         self.description = description
         self.start = dtutil.normalize_datetime(start)
         self.targets = targets
+        self.queue = queue
 
         # Instantiate the driver
         driver_config = recursive_update(profile.configuration, configuration)

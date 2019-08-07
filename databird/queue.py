@@ -1,45 +1,54 @@
-from threading import Thread
-import queue
+from redis import Redis
+from rq import Queue
+
+RESERVE_KEY = "databird"
+
+ONE_HOUR = 3600
+ONE_DAY = 24 * ONE_HOUR
+
+RESULT_TTL = 600
+QUEUE_TTL = 24 * ONE_HOUR
+JOB_TIMEOUT = 7 * ONE_DAY
+FAILURE_TTL = ONE_DAY
 
 
-class TaskQueue(queue.Queue):
-    """ A simple task queue with multiple threaded workers."""
+class MultiQueue:
+    def __init__(self, redis_conn=None, is_async=True):
+        self._redis_conn = redis_conn or Redis()
+        self._is_async = is_async
+        self._ttl_defaults = dict(
+            result_ttl=RESULT_TTL,
+            job_timeout=JOB_TIMEOUT,
+            ttl=QUEUE_TTL,
+            failure_ttl=FAILURE_TTL,
+        )
 
-    def __init__(self, num_workers=1):
-        super().__init__()
-        if num_workers < 0:
-            raise ValueError("num_workers must be positive")
-        self.num_workers = num_workers
-        self.workers = []
-        self.start_workers()
+    def submit_job(self, queue_name, job_id, *args, **kwargs):
+        """Add a task to the queue and  return False if job already exists."""
+        q = Queue(queue_name, connection=self._redis_conn, is_async=self._is_async)
+        if self._reserve_job_id(job_id):
+            # we are the first ones
+            rq_args = args
+            rq_kwargs = self._ttl_defaults.copy()
+            rq_kwargs.update(kwargs)
+            rq_kwargs["job_id"] = job_id
+            job = q.enqueue(*rq_args, **rq_kwargs)
+            return job
 
-    def add_task(self, task, *args, **kwargs):
-        """Add a task to the queue."""
-        if task is not None:
-            self.put((task, args, kwargs))
+    @staticmethod
+    def _rq_key(job_id):
+        return "rq:job:" + job_id
 
-    def start_workers(self):
-        """Spin up the workers."""
-        for i in range(self.num_workers - len(self.workers)):
-            t = Thread(target=self.worker)
-            t.daemon = True
-            self.workers.append(t)
-            t.start()
+    def _reserve_job_id(self, job_id):
+        # To check if a job is already running, we pre-create the
+        # redis hash entry that is created by rq by setting the
+        # 'databird->1' hash table entry under 'rq:job:<id>'
+        # The whole hash map is dropped after the TTL defined by rq.
+        return self._redis_conn.hsetnx(self._rq_key(job_id), RESERVE_KEY, 1)
 
-    def stop_workers(self):
-        """Stop the workers and join the threads."""
-        self.join()
-        for i in range(self.num_workers):
-            # submitting None quits the worker
-            self.put((None, None, None))
-        for t in self.workers:
-            t.join()
-        self.workers = []
-
-    def worker(self):
-        while True:
-            item, args, kwargs = self.get()
-            if item is None:
-                break
-            item(*args, **kwargs)
-            self.task_done()
+    def job_status(self, job_id):
+        try:
+            status = self._redis_conn.hget(self._rq_key(job_id), "status").decode()
+        except:
+            status = "unknown"
+        return status
