@@ -7,8 +7,6 @@ from typing import List, Set, Dict, Tuple, Optional
 import datetime as dt
 import os
 
-QUEUES = ["default", "fast", "slow", "lethargic"]
-
 
 class Profile:
     def __init__(self, name, driver: BaseDriver = None, configuration=None):
@@ -44,10 +42,6 @@ class Repository:
             raise ValueError("`profile` is required.")
         if not targets:
             raise ValueError("`targets` is required.")
-        if queue not in QUEUES:
-            raise ValueError(
-                "Invalid queue: '{}'. Use one of {}".format(queue, ", ".join(QUEUES))
-            )
 
         # Set default values
         if delay is None:
