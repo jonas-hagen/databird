@@ -98,8 +98,11 @@ class Settings(collections.UserDict):
                     raise ConfigurationError(
                         "Repository `{}` is missing profile field.".format(name)
                     )
-                repo_config["profile"] = config["profiles"][repo_config["profile"]]
-                config["repositories"][name] = Repository(name, **repo_config)
+                profile = config["profiles"][repo_config["profile"]]
+                repo_config["profile"] = profile
+                repo_config_complete = profile.kwargs.copy()
+                repo_config_complete.update(repo_config)
+                config["repositories"][name] = Repository(name, **repo_config_complete)
 
         return config
 

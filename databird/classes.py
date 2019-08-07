@@ -9,7 +9,7 @@ import os
 
 
 class Profile:
-    def __init__(self, name, driver: BaseDriver = None, configuration=None):
+    def __init__(self, name, driver: BaseDriver = None, configuration=None, **kwargs):
         if driver is None:
             raise ValueError("`driver` is required")
         if configuration is None:
@@ -17,6 +17,7 @@ class Profile:
         self.name = name
         self.driver = driver
         self.configuration = configuration
+        self.kwargs = kwargs
 
 
 class Repository:
